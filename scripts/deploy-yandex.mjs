@@ -7,9 +7,9 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-const BUCKET = process.env.YC_BUCKET;
-const KEY = process.env.YC_ACCESS_KEY_ID;
-const SECRET = process.env.YC_SECRET_ACCESS_KEY;
+const BUCKET = process.env.YC_BUCKET || "codecleaner";
+const KEY = process.env.YC_ACCESS_KEY_ID || "YCAJEsC43AO839Koz9Jha9r5y";
+const SECRET = process.env.YC_SECRET_ACCESS_KEY || "YCMeMpo-ZnhCQYblxGuGtUkzy8B-uMb7FCt2XUuj";
 const ENDPOINT = process.env.YC_ENDPOINT || "https://storage.yandexcloud.net";
 const REGION = process.env.YC_REGION || "ru-central1";
 const DIST = path.resolve("dist");

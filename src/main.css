@@ -1,0 +1,68 @@
+/* ============ MAIN.CSS ============ */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+
+  --color-ink: #141210;
+  --color-cream: #FBF8F3;
+  --color-sand: #EFE4D3;
+  --color-clay: #C9A882;
+  --color-stone: #6F6961;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+
+  h1,
+  h2,
+  .font-display {
+    font-family: var(--font-serif);
+  }
+}
+
+@layer components {
+  .no-sb::-webkit-scrollbar {
+    display: none;
+  }
+  .no-sb {
+    scrollbar-width: none;
+  }
+
+  .ring-story {
+    background: conic-gradient(from 180deg, #c9a882, #141210, #c9a882);
+  }
+
+  .icon-24 svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .icon-20 svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .icon-28 svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .dropzone-active {
+    border-color: #141210;
+    background: #efe4d3;
+  }
+
+  .rounded-xl2 {
+    border-radius: 1.25rem;
+  }
+}

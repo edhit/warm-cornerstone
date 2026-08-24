@@ -2,27 +2,35 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>CODE — химчистка мебели в Москве и МО | Диваны, кресла, ковры</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CODE" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <style>
+      html, body { touch-action: manipulation; }
+    </style>
+    <title>CODE — химчистка мебели и уборка квартир в Москве и МО</title>
     <meta
       name="description"
-      content="Профессиональная химчистка диванов, кресел, стульев, матрасов и ковров с выездом на дом или в офис. Москва и МО. Оценка по фото за 1 минуту в Telegram или WhatsApp."
+      content="Профессиональная химчистка диванов, кресел, стульев, матрасов и ковров, а также уборка квартир, домов и офисов с выездом. Москва и МО. Оценка по фото за 1 минуту в Telegram или WhatsApp."
     />
     <meta name="author" content="CODE" />
     <meta name="theme-color" content="#141210" />
-    <link rel="canonical" href="/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="CODE" />
     <meta property="og:locale" content="ru_RU" />
     <meta property="og:url" content="/" />
-    <meta property="og:title" content="CODE — химчистка мебели в Москве и МО" />
+    <meta property="og:title" content="CODE — химчистка мебели и уборка квартир в Москве и МО" />
     <meta
       property="og:description"
       content="Вернём мебели вид, за который не стыдно. Химчистка диванов, кресел и текстиля с выездом. Оценка по фото за 1 минуту."
     />
     <meta property="og:image" content="/img/hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="CODE — химчистка мебели в Москве и МО" />
+    <meta name="twitter:title" content="CODE — химчистка мебели и уборка квартир в Москве и МО" />
     <meta
       name="twitter:description"
       content="Химчистка диванов, кресел, матрасов и ковров с выездом. Оценка по фото за 1 минуту."
@@ -33,7 +41,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <script type="application/ld+json">
@@ -55,48 +63,43 @@
         "sameAs": ["https://www.instagram.com/masrur22/", "https://t.me/mas_rur22"]
       }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { sans: ["Manrope", "system-ui", "sans-serif"] },
-            colors: {
-              ink: "#141210",
-              cream: "#FBF8F3",
-              sand: "#EFE4D3",
-              clay: "#C9A882",
-              stone: "#6F6961",
-            },
-            borderRadius: { xl2: "1.25rem" },
-          },
-        },
-      };
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
-    <style>
-      html { scroll-behavior: smooth; }
-      body { -webkit-tap-highlight-color: transparent; }
-      [x-cloak] { display: none !important; }
-      .no-sb::-webkit-scrollbar { display: none; }
-      .no-sb { scrollbar-width: none; }
-      .ring-story {
-        background: conic-gradient(from 180deg, #C9A882, #141210, #C9A882);
-      }
-    </style>
   </head>
 
-  <body class="bg-cream font-sans text-ink antialiased" x-data="site()" x-cloak>
+  <body class="bg-cream font-sans text-ink antialiased" >
+    <div x-data="app()" x-init="init()" x-cloak class="pt-[env(safe-area-inset-top)]">
+    <!-- INSTALL BANNER: shows only when the app can be installed and isn't yet -->
+    <div x-show="canInstall && !bannerDismissed" x-cloak class="flex items-center gap-3 bg-ink px-4 py-2.5 text-cream">
+      <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-cream/10 icon-20" x-html="icon('download')"></span>
+      <span class="min-w-0 flex-1 text-xs leading-tight sm:text-sm">
+        Установите CODE как приложение — быстрый доступ с главного экрана
+      </span>
+      <button
+        @click="installApp()"
+        class="shrink-0 rounded-full bg-cream px-3.5 py-1.5 text-xs font-semibold text-ink transition hover:bg-cream/90 sm:text-sm"
+      >Установить</button>
+      <button @click="bannerDismissed = true" aria-label="Закрыть" class="shrink-0 px-1 text-lg leading-none text-cream/60">×</button>
+    </div>
+
+    <!-- APP-MODE BANNER: shows only when running installed from the home screen -->
+    <div x-show="isStandalone" x-cloak class="bg-ink px-4 py-2 text-center text-xs text-cream/80">
+      Вы в приложении CODE ·
+      <a href="https://code-cleaning.ru/" target="_blank" rel="noopener" class="font-semibold text-cream underline underline-offset-2">
+        Открыть полную версию сайта
+      </a>
+    </div>
+
     <!-- HEADER -->
-    <header class="sticky top-0 z-40 border-b border-black/5 bg-cream/85 backdrop-blur">
+    <header class="sticky top-[env(safe-area-inset-top)] z-40 border-b border-black/5 bg-cream/85 backdrop-blur">
       <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 lg:h-20">
-        <a href="#top" class="text-2xl font-extrabold tracking-[0.2em]">CODE</a>
+        <a href="#top" class="font-display text-2xl font-extrabold tracking-[0.2em]">CODE</a>
         <nav class="hidden items-center gap-8 text-sm font-medium text-stone lg:flex">
-          <a class="transition hover:text-ink" href="#services">Услуги</a>
+          <a x-show="!isStandalone" class="transition hover:text-ink" href="#services">Услуги</a>
           <a class="transition hover:text-ink" href="#works">Наши работы</a>
-          <a class="transition hover:text-ink" href="#prices">Цены</a>
-          <a class="transition hover:text-ink" href="#reviews">Отзывы</a>
-          <a class="transition hover:text-ink" href="#about">О нас</a>
+          <a class="transition hover:text-ink" href="#calculator">Калькулятор</a>
+          <a x-show="!isStandalone" class="transition hover:text-ink" href="#prices">Цены</a>
+          <a x-show="!isStandalone" class="transition hover:text-ink" href="#reviews">Отзывы</a>
+          <a x-show="!isStandalone" class="transition hover:text-ink" href="#faq">Вопросы</a>
+          <a x-show="!isStandalone" class="transition hover:text-ink" href="#about">О нас</a>
           <a class="transition hover:text-ink" href="#contacts">Контакты</a>
         </nav>
         <div class="hidden lg:block">
@@ -105,8 +108,10 @@
             target="_blank"
             rel="noopener"
             class="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-cream transition hover:bg-ink/85"
-            >Написать в Telegram</a
           >
+            <span class="icon-20" x-html="icon('telegram')"></span>
+            Написать в Telegram
+          </a>
         </div>
         <button
           @click="menu = !menu"
@@ -123,7 +128,7 @@
       </div>
       <div x-show="menu" x-transition.origin.top class="border-t border-black/5 bg-cream lg:hidden">
         <nav class="mx-auto grid max-w-6xl gap-1 px-5 py-4 text-base font-medium">
-          <template x-for="l in nav" :key="l.h">
+          <template x-for="l in visibleNav" :key="l.h">
             <a :href="l.h" @click="menu=false" class="rounded-xl px-3 py-3 transition active:bg-sand" x-text="l.t"></a>
           </template>
         </nav>
@@ -132,11 +137,11 @@
 
     <main id="top">
       <!-- HERO -->
-      <section class="relative overflow-hidden">
+      <section x-show="!isStandalone" class="relative overflow-hidden">
         <div class="mx-auto max-w-6xl px-5 pb-8 pt-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-14 lg:pb-16 lg:pt-16">
           <div>
             <span class="inline-block rounded-full bg-sand px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-ink/70"
-              >Химчистка мебели в Москве и МО</span
+              >Химчистка и уборка в Москве и МО</span
             >
             <h1 class="mt-6 text-[2.15rem] font-extrabold leading-[1.08] tracking-tight lg:text-6xl">
               Вернём мебели вид,<br class="hidden lg:block" />
@@ -147,22 +152,14 @@
             </p>
             <div class="mt-7 flex flex-col gap-3 sm:flex-row">
               <a
-                href="https://t.me/mas_rur22"
-                target="_blank"
-                rel="noopener"
+                href="#calculator"
                 class="inline-flex items-center justify-center gap-3 rounded-2xl bg-ink px-6 py-4 text-[15px] font-semibold text-cream shadow-lg shadow-ink/15 transition active:scale-[0.98] hover:bg-ink/85"
               >
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.9 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.4-4.8 8.7-7.9c.4-.3-.1-.5-.6-.2L6.2 12.9l-4.6-1.4c-1-.3-1-1 .2-1.5l18-6.9c.8-.3 1.5.2 1.2 1.2Z"/></svg>
-                Написать в Telegram
+                <span class="icon-20" x-html="icon('camera')"></span>
+                Отправить фото — получить оценку
               </a>
-              <a
-                href="https://wa.me/79035981041"
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center justify-center gap-3 rounded-2xl border border-ink/15 bg-white px-6 py-4 text-[15px] font-semibold text-ink transition active:scale-[0.98] hover:bg-sand"
-              >
-                <svg class="h-5 w-5 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9 1-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4-.1.7.5l.8 2c.1.2.1.4 0 .6l-.4.5c-.1.2-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .8 1.7 1.1 2 1.2.2.1.4.1.6-.1l.8-.9c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.4.1.1.1.7-.1 1.5Z"/></svg>
-                Написать в WhatsApp
+              <a href="#works" class="inline-flex items-center justify-center gap-3 rounded-2xl border border-ink/15 bg-white px-6 py-4 text-[15px] font-semibold text-ink transition active:scale-[0.98] hover:bg-sand">
+                Смотреть наши работы
               </a>
             </div>
           </div>
@@ -191,16 +188,141 @@
         </div>
       </section>
 
+      <!-- DISCOUNT RIBBON -->
+      <section x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-8">
+        <a
+          href="#calculator"
+          class="flex items-center justify-between gap-3 rounded-2xl bg-clay/25 px-5 py-3.5 text-sm font-semibold text-ink transition hover:bg-clay/35"
+        >
+          <span class="flex items-center gap-2">
+            <span class="icon-20 shrink-0" x-html="icon('tag')"></span>
+            Скидка 15% на первый заказ — выезд мастера уже сегодня
+          </span>
+          <span class="icon-20 shrink-0" x-html="icon('send')"></span>
+        </a>
+      </section>
+
+      <!-- TRUST LOGOS (временно скрыт по просьбе клиента — чтобы вернуть, уберите обёртку комментария ниже)
+      <section class="mx-auto max-w-6xl px-5 pt-10 lg:pt-14">
+        <p class="text-center text-[11px] font-semibold uppercase tracking-widest text-stone">Нам доверяют рестораны, офисы и тысячи клиентов</p>
+        <div class="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-stone/60">
+          <span class="font-display text-lg font-semibold tracking-wide">White Rabbit</span>
+          <span class="font-display text-lg font-semibold tracking-wide">Soho Rooms</span>
+          <span class="font-display text-lg font-semibold tracking-wide">Sapiens</span>
+          <span class="font-display text-lg font-semibold tracking-wide">Библиотека</span>
+        </div>
+      </section>
+      -->
+
+      <!-- CALCULATOR -->
+      <section id="calculator" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+        <h2 class="text-2xl font-extrabold lg:text-4xl">Калькулятор стоимости</h2>
+        <p class="mt-2 max-w-md text-[15px] leading-relaxed text-stone">
+          Выберите предметы — увидите примерную стоимость. Точную цену подтвердим по фото в мессенджере.
+        </p>
+
+        <div class="mt-7 grid gap-4 lg:grid-cols-2 lg:items-start">
+          <!-- item list -->
+          <div class="grid gap-3">
+            <template x-for="item in calcItems" :key="item.t">
+              <div class="flex items-center justify-between gap-4 rounded-2xl border border-black/5 bg-white px-4 py-3 lg:px-5">
+                <div class="flex min-w-0 items-center gap-3">
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-sand icon-20" x-html="icon(item.icon)"></span>
+                  <div class="min-w-0">
+                    <p class="truncate text-[15px] font-semibold" x-text="item.t"></p>
+                    <p class="text-xs text-stone" x-text="'от ' + item.p.toLocaleString('ru-RU') + ' ₽' + (item.unit ? ' / ' + item.unit : '')"></p>
+                  </div>
+                </div>
+                <div class="flex shrink-0 items-center gap-3">
+                  <button
+                    @click="item.qty = Math.max(0, item.qty - 1)"
+                    class="grid h-9 w-9 place-items-center rounded-full border border-black/10 text-lg transition active:scale-90 hover:bg-sand"
+                    aria-label="Уменьшить"
+                  >−</button>
+                  <span class="w-4 text-center text-[15px] font-semibold" x-text="item.qty"></span>
+                  <button
+                    @click="item.qty++"
+                    class="grid h-9 w-9 place-items-center rounded-full bg-ink text-cream transition active:scale-90 hover:bg-ink/85"
+                    aria-label="Увеличить"
+                  >+</button>
+                </div>
+              </div>
+            </template>
+
+            <div class="mt-1 flex items-center justify-between gap-4 rounded-2xl bg-sand px-5 py-4">
+              <span class="text-[15px] font-medium text-ink/70">Предварительно</span>
+              <span class="text-lg font-extrabold" x-text="calcTotal.toLocaleString('ru-RU') + ' ₽'"></span>
+            </div>
+          </div>
+
+          <!-- contact panel -->
+          <div class="rounded-[2rem] bg-ink p-6 text-cream lg:p-8">
+            <h3 class="font-display text-xl font-bold lg:text-2xl">Напишите нам — ответим за 15 минут</h3>
+            <p class="mt-3 text-sm leading-relaxed text-cream/60">
+              Отправьте фото мебели в мессенджер: рассчитаем точную стоимость и подберём удобное время выезда. Никаких форм и звонков без запроса.
+            </p>
+
+            <div class="mt-5 grid gap-3">
+              <a
+                :href="waLink"
+                target="_blank"
+                rel="noopener"
+                class="flex items-center justify-between gap-3 rounded-2xl bg-[#25D366] px-5 py-4 text-white transition hover:brightness-95"
+              >
+                <span class="flex items-center gap-3">
+                  <span class="icon-24" x-html="icon('whatsapp')"></span>
+                  <span class="text-left">
+                    <span class="block text-[15px] font-semibold">Написать в WhatsApp</span>
+                    <span class="block text-xs text-white/80">с расчётом из калькулятора</span>
+                  </span>
+                </span>
+                <span class="icon-20" x-html="icon('send')"></span>
+              </a>
+
+              <a
+                href="https://t.me/mas_rur22"
+                target="_blank"
+                rel="noopener"
+                class="flex items-center justify-between gap-3 rounded-2xl bg-[#2AABEE] px-5 py-4 text-white transition hover:brightness-95"
+              >
+                <span class="flex items-center gap-3">
+                  <span class="icon-24" x-html="icon('telegram')"></span>
+                  <span class="text-left">
+                    <span class="block text-[15px] font-semibold">Написать в Telegram</span>
+                    <span class="block text-xs text-white/80">@mas_rur22</span>
+                  </span>
+                </span>
+                <span class="icon-20" x-html="icon('camera')"></span>
+              </a>
+
+              <a href="tel:+79017378580" class="flex items-center gap-3 rounded-2xl border border-cream/15 px-5 py-4 transition hover:bg-cream/5">
+                <span class="icon-20" x-html="icon('phone')"></span>
+                <span class="text-[15px] font-semibold">+7 901 737 85 80</span>
+              </a>
+            </div>
+
+            <ul class="mt-6 grid gap-2.5 text-sm text-cream/70">
+              <li class="flex items-center gap-2"><span class="icon-20 shrink-0 text-clay" x-html="icon('check')"></span>Бесплатная оценка по фото</li>
+              <li class="flex items-center gap-2"><span class="icon-20 shrink-0 text-clay" x-html="icon('check')"></span>Выезд за 1–2 часа</li>
+              <li class="flex items-center gap-2"><span class="icon-20 shrink-0 text-clay" x-html="icon('check')"></span>Работаем ежедневно 8:00–22:00</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <!-- STORIES (instagram style) -->
-      <section id="works" class="mx-auto max-w-6xl px-5 pt-12 lg:pt-20">
+      <section id="works" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Реальные результаты наших работ</h2>
-        <p class="mt-2 text-[15px] text-stone">Нажмите на кружок — посмотрите историю работы, как в Instagram.</p>
+        <p class="mt-2 text-[15px] text-stone">Нажмите на кружок — посмотрите фотографии работы, как в Instagram.</p>
 
         <div class="no-sb mt-6 flex gap-4 overflow-x-auto pb-2">
-          <template x-for="(s, i) in stories" :key="i">
-            <button @click="open(i)" class="shrink-0 text-center transition active:scale-95">
-              <span class="ring-story grid h-[76px] w-[76px] place-items-center rounded-full p-[3px] lg:h-24 lg:w-24">
-                <img :src="s.img" :alt="s.title" class="h-full w-full rounded-full border-[3px] border-cream object-cover" loading="lazy" />
+          <template x-for="(s, i) in stories" :key="s.title">
+            <button @click="openStories(i)" class="shrink-0 text-center transition active:scale-95">
+              <span
+                class="grid h-[76px] w-[76px] shrink-0 place-items-center overflow-hidden rounded-full p-[3px] lg:h-24 lg:w-24"
+                :class="viewedStories.includes(i) ? 'bg-black/15' : 'ring-story'"
+              >
+                <img :src="s.slides[0].img" :alt="s.title" class="h-full w-full min-h-0 min-w-0 rounded-full border-[3px] border-cream object-cover" loading="lazy" />
               </span>
               <span class="mt-2 block max-w-[80px] truncate text-[11px] font-medium text-stone lg:max-w-[96px]" x-text="s.title"></span>
             </button>
@@ -208,37 +330,51 @@
         </div>
 
         <!-- BEFORE / AFTER -->
-        <div class="mt-8 overflow-hidden rounded-3xl border border-black/5 bg-white">
-          <div
-            class="relative select-none"
-            x-data="{ p: 50, drag(e){ const r = $el.getBoundingClientRect(); const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left; this.p = Math.min(100, Math.max(0, (x / r.width) * 100)); } }"
-            @mousedown="drag($event)" @mousemove="$event.buttons === 1 && drag($event)"
-            @touchstart.passive="drag($event)" @touchmove.passive="drag($event)"
-          >
-            <img src="/img/beforeafter.jpg" width="1200" height="800" alt="Диван до и после химчистки" class="h-64 w-full object-cover lg:h-[440px]" loading="lazy" />
-            <div class="pointer-events-none absolute inset-y-0 left-0 overflow-hidden" :style="`width:${p}%`">
-              <img src="/img/beforeafter.jpg" alt="" aria-hidden="true" class="h-64 w-full object-cover brightness-90 saturate-[0.6] lg:h-[440px]" style="filter: sepia(0.35) contrast(0.95)" loading="lazy" />
+<!-- BEFORE / AFTER -->
+<div class="mt-8 overflow-hidden rounded-3xl border border-black/5 bg-white">
+  <div class="grid grid-cols-1 gap-px bg-black/5 sm:grid-cols-2">
+    <button @click="openStories(9)" class="relative cursor-pointer bg-white transition hover:brightness-95">
+      <img src="/img/stories/013.jpg" width="585" height="440" alt="Диван до химчистки" class="h-64 w-full object-cover object-top lg:h-[400px]" loading="lazy" />
+      <span class="pointer-events-none absolute left-4 top-4 rounded-lg bg-black/70 px-3 py-1 text-xs font-semibold text-white">ДО</span>
+      <span class="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-1.5 text-xs text-white backdrop-blur-sm">Нажмите, чтобы увеличить</span>
+    </button>
+    <button @click="openStories(9)" class="relative cursor-pointer bg-white transition hover:brightness-95">
+      <img src="/img/stories/015.jpg" width="585" height="440" alt="Диван после химчистки" class="h-64 w-full object-cover object-top lg:h-[400px]" loading="lazy" />
+      <span class="pointer-events-none absolute right-4 top-4 rounded-lg bg-white/90 px-3 py-1 text-xs font-semibold text-ink">ПОСЛЕ</span>
+      <span class="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-1.5 text-xs text-white backdrop-blur-sm">Нажмите, чтобы увеличить</span>
+    </button>
+  </div>
+  <div class="px-5 py-4">
+    <div class="font-semibold">Диван, велюр — результат после химчистки</div>
+    <div class="text-sm text-stone">Нажмите на фото, чтобы посмотреть в увеличении</div>
+  </div>
+</div>
+      </section>
+
+      <!-- WHAT WE DO -->
+      <section id="services" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+        <h2 class="text-2xl font-extrabold lg:text-4xl">Чем мы занимаемся</h2>
+        <p class="mt-2 max-w-md text-[15px] leading-relaxed text-stone">
+          Не только мебель — берём в работу квартиру, дом или офис целиком.
+        </p>
+        <div class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <template x-for="w in services" :key="w.t">
+            <div class="rounded-3xl border border-black/5 bg-white p-6">
+              <div class="grid h-12 w-12 place-items-center rounded-2xl bg-sand icon-24" x-html="icon(w.icon)"></div>
+              <p class="mt-4 text-[15px] font-semibold leading-snug" x-text="w.t"></p>
+              <p class="mt-1 text-sm leading-relaxed text-stone" x-text="w.d"></p>
             </div>
-            <div class="pointer-events-none absolute inset-y-0 w-0.5 bg-white/90" :style="`left:${p}%`">
-              <span class="absolute top-1/2 -ml-5 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white text-ink shadow-lg">⇄</span>
-            </div>
-            <span class="pointer-events-none absolute left-4 top-4 rounded-lg bg-black/70 px-3 py-1 text-xs font-semibold text-white">ДО</span>
-            <span class="pointer-events-none absolute right-4 top-4 rounded-lg bg-white/90 px-3 py-1 text-xs font-semibold text-ink">ПОСЛЕ</span>
-          </div>
-          <div class="px-5 py-4">
-            <div class="font-semibold">Диван, ткань</div>
-            <div class="text-sm text-stone">Москва, ЖК Сердце Столицы</div>
-          </div>
+          </template>
         </div>
       </section>
 
       <!-- HOW -->
-      <section id="services" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="process" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Как мы работаем</h2>
         <ol class="mt-8 grid gap-5 lg:grid-cols-5">
           <template x-for="(s, i) in steps" :key="i">
             <li class="rounded-3xl border border-black/5 bg-white p-5">
-              <div class="grid h-11 w-11 place-items-center rounded-2xl bg-sand text-sm font-extrabold" x-text="'0' + (i+1)"></div>
+              <div class="grid h-11 w-11 place-items-center rounded-2xl bg-sand icon-20" x-html="icon(s.icon)"></div>
               <p class="mt-4 text-[15px] font-semibold leading-snug" x-text="s.t"></p>
               <p class="mt-1 text-sm leading-relaxed text-stone" x-text="s.d"></p>
             </li>
@@ -247,7 +383,7 @@
       </section>
 
       <!-- PRICES -->
-      <section id="prices" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="prices" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Цены на химчистку мебели</h2>
         <div class="mt-7 grid gap-3 lg:grid-cols-2">
           <template x-for="p in prices" :key="p.t">
@@ -269,12 +405,12 @@
       </section>
 
       <!-- STAINS -->
-      <section class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Работаем с любыми загрязнениями</h2>
         <div class="mt-7 grid grid-cols-3 gap-4 lg:grid-cols-6">
           <template x-for="s in stains" :key="s.t">
             <div class="rounded-3xl border border-black/5 bg-white p-4 text-center">
-              <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-sand text-xl" x-text="s.e"></div>
+              <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-sand icon-20" x-html="icon(s.icon)"></div>
               <p class="mt-3 text-[12px] leading-snug text-stone" x-text="s.t"></p>
             </div>
           </template>
@@ -282,13 +418,13 @@
       </section>
 
       <!-- WHY -->
-      <section class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <div class="rounded-[2rem] bg-ink p-7 text-cream lg:p-12">
           <h2 class="text-2xl font-extrabold lg:text-4xl">Почему выбирают CODE</h2>
           <div class="mt-8 grid gap-6 lg:grid-cols-2">
             <template x-for="w in why" :key="w.t">
               <div class="flex gap-4">
-                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-clay/20 text-xl" x-text="w.e"></div>
+                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-clay/20 icon-20" x-html="icon(w.icon)"></div>
                 <div class="min-w-0">
                   <p class="font-semibold" x-text="w.t"></p>
                   <p class="mt-1 text-sm leading-relaxed text-cream/60" x-text="w.d"></p>
@@ -300,7 +436,7 @@
       </section>
 
       <!-- ABOUT -->
-      <section id="about" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="about" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <div class="overflow-hidden rounded-[2rem] border border-black/5 bg-white lg:grid lg:grid-cols-2">
           <img src="/img/founder.jpg" width="900" height="1200" alt="Масрур — основатель химчистки CODE" class="h-72 w-full object-cover object-top lg:h-full" loading="lazy" />
           <div class="p-7 lg:p-12">
@@ -309,17 +445,43 @@
               Я основатель CODE и лично отвечаю за качество каждой чистки. Мы не используем агрессивную химию «на всё подряд» — подбираем состав под материал и загрязнение.
             </p>
             <a href="https://www.instagram.com/masrur22/" target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-2 rounded-2xl border border-ink/15 px-5 py-3 text-sm font-semibold transition hover:bg-sand">
+              <span class="icon-20" x-html="icon('instagram')"></span>
               Instagram @masrur22
             </a>
           </div>
         </div>
       </section>
 
+      <!-- FAQ -->
+      <section id="faq" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+        <h2 class="text-2xl font-extrabold lg:text-4xl">Вопросы, которые задают до заказа</h2>
+        <div class="mt-7 grid gap-3">
+          <template x-for="(f, i) in faqs" :key="f.q">
+            <div class="overflow-hidden rounded-2xl border border-black/5 bg-white">
+              <button
+                @click="faqOpen = faqOpen === i ? null : i"
+                class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+              >
+                <span class="text-[15px] font-semibold" x-text="f.q"></span>
+                <span
+                  class="icon-20 shrink-0 text-stone transition-transform"
+                  :class="faqOpen === i && 'rotate-45'"
+                  x-html="icon('plus')"
+                ></span>
+              </button>
+              <div x-show="faqOpen === i" x-transition>
+                <p class="px-5 pb-5 text-sm leading-relaxed text-stone" x-text="f.a"></p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
       <!-- REVIEWS -->
-      <section id="reviews" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="reviews" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Отзывы клиентов</h2>
         <div class="no-sb mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:overflow-visible">
-          <template x-for="r in reviews" :key="r.n">
+          <template x-for="(r, ri) in reviews" :key="r.n">
             <article class="w-[85%] shrink-0 snap-center rounded-3xl border border-black/5 bg-white p-5 lg:w-auto">
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
@@ -329,6 +491,13 @@
                 <span class="shrink-0 text-clay">★★★★★</span>
               </div>
               <p class="mt-4 text-[15px] leading-relaxed text-stone" x-text="r.t"></p>
+              <div class="mt-4 flex gap-2" x-show="r.photos && r.photos.length">
+                <template x-for="(photo, pi) in (r.photos || [])" :key="photo">
+                  <button @click="openReviewPhotos(ri, pi)" class="h-16 w-16 overflow-hidden rounded-xl transition active:scale-95">
+                    <img :src="photo" class="h-full w-full object-cover" alt="Фото к отзыву" loading="lazy" />
+                  </button>
+                </template>
+              </div>
             </article>
           </template>
         </div>
@@ -354,11 +523,11 @@
     <footer class="mt-14 bg-ink px-5 pb-28 pt-12 text-cream lg:mt-24 lg:pb-12">
       <div class="mx-auto grid max-w-6xl gap-8 lg:grid-cols-3">
         <div>
-          <div class="text-2xl font-extrabold tracking-[0.2em]">CODE</div>
+          <div class="font-display text-2xl font-extrabold tracking-[0.2em]">CODE</div>
           <p class="mt-3 text-sm text-cream/60">Профессиональная химчистка мебели в Москве и МО</p>
         </div>
         <nav class="grid gap-2 text-sm text-cream/70">
-          <template x-for="l in nav" :key="l.h">
+          <template x-for="l in visibleNav" :key="l.h">
             <a :href="l.h" class="transition hover:text-cream" x-text="l.t"></a>
           </template>
         </nav>
@@ -376,29 +545,73 @@
     <!-- MOBILE STICKY BAR -->
     <div class="fixed inset-x-0 bottom-0 z-40 border-t border-black/5 bg-cream/95 px-4 pb-[calc(env(safe-area-inset-bottom)+10px)] pt-3 backdrop-blur lg:hidden">
       <div class="flex gap-3">
-        <a href="https://t.me/mas_rur22" target="_blank" rel="noopener" class="flex-1 rounded-2xl bg-[#2AABEE] py-3.5 text-center text-sm font-semibold text-white transition active:scale-[0.98]">Telegram</a>
-        <a href="https://wa.me/79035981041" target="_blank" rel="noopener" class="flex-1 rounded-2xl bg-[#25D366] py-3.5 text-center text-sm font-semibold text-white transition active:scale-[0.98]">WhatsApp</a>
-        <a href="tel:+79035981041" aria-label="Позвонить" class="grid w-12 shrink-0 place-items-center rounded-2xl bg-ink text-cream transition active:scale-95">✆</a>
+        <a href="https://t.me/mas_rur22" target="_blank" rel="noopener" class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#2AABEE] py-3.5 text-center text-sm font-semibold text-white transition active:scale-[0.98]">
+          <span class="icon-20" x-html="icon('telegram')"></span>Telegram
+        </a>
+        <a href="https://wa.me/79035981041" target="_blank" rel="noopener" class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#25D366] py-3.5 text-center text-sm font-semibold text-white transition active:scale-[0.98]">
+          <span class="icon-20" x-html="icon('whatsapp')"></span>WhatsApp
+        </a>
+        <a href="tel:+79035981041" aria-label="Позвонить" class="grid w-12 shrink-0 place-items-center rounded-2xl bg-ink text-cream transition active:scale-95 icon-20" x-html="icon('phone')"></a>
       </div>
     </div>
 
-    <!-- STORY VIEWER -->
-    <div x-show="viewer" x-transition.opacity class="fixed inset-0 z-50 bg-black" @keydown.escape.window="viewer=false">
+    <!-- iOS "add to home screen" instructions (no native install prompt exists on iOS Safari) -->
+    <div x-show="iosHint" x-transition.opacity class="fixed inset-0 z-50 flex items-end bg-black/50 lg:items-center lg:justify-center" @click.self="iosHint = false">
+      <div class="w-full rounded-t-3xl bg-white p-6 lg:max-w-sm lg:rounded-3xl">
+        <p class="text-[15px] font-semibold">Добавить CODE на главный экран</p>
+        <ol class="mt-3 grid gap-2 text-sm leading-relaxed text-stone">
+          <li class="flex items-center gap-2"><span class="icon-20 shrink-0 text-ink" x-html="icon('send')"></span>Нажмите «Поделиться» внизу экрана Safari</li>
+          <li class="flex items-center gap-2"><span class="icon-20 shrink-0 text-ink" x-html="icon('plus')"></span>Выберите «На экран «Домой»»</li>
+          <li class="flex items-center gap-2"><span class="icon-20 shrink-0 text-ink" x-html="icon('check')"></span>Нажмите «Добавить» — готово</li>
+        </ol>
+        <button @click="iosHint = false" class="mt-5 w-full rounded-2xl bg-ink py-3 text-sm font-semibold text-cream">Понятно</button>
+      </div>
+    </div>
+
+    <!-- REVIEW PHOTO VIEWER (same instagram-style pattern as stories) -->
+    <div x-show="reviewViewer.open" x-transition.opacity class="fixed inset-0 z-50 bg-black" @keydown.escape.window="reviewViewer.open = false">
+      <div class="relative mx-auto flex h-full max-w-md flex-col">
+        <div class="flex items-center justify-between px-4 py-3 text-white">
+          <span class="text-sm font-semibold" x-text="reviews[reviewViewer.reviewIdx]?.n"></span>
+          <button @click="reviewViewer.open = false" class="text-2xl leading-none" aria-label="Закрыть">×</button>
+        </div>
+        <div class="relative flex-1 overflow-hidden bg-black">
+          <img :src="reviews[reviewViewer.reviewIdx]?.photos?.[reviewViewer.photoIdx]" class="h-full w-full object-contain" />
+          <button @click="prevReviewPhoto()" class="absolute inset-y-0 left-0 w-1/3" aria-label="Назад"></button>
+          <button @click="nextReviewPhoto()" class="absolute inset-y-0 right-0 w-2/3" aria-label="Далее"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORY VIEWER (instagram-style, multi-slide highlights) -->
+    <div x-show="viewer.open" x-transition.opacity class="fixed inset-0 z-50 bg-black" @keydown.escape.window="closeViewer()">
       <div class="relative mx-auto flex h-full max-w-md flex-col">
         <div class="flex gap-1 p-3">
-          <template x-for="(s, i) in stories" :key="'b'+i">
-            <span class="h-0.5 flex-1 rounded-full" :class="i <= idx ? 'bg-white' : 'bg-white/30'"></span>
+          <template x-for="(slide, i) in (stories[viewer.storyIdx]?.slides || [])" :key="'b'+i">
+            <span class="h-0.5 flex-1 rounded-full" :class="i <= viewer.slideIdx ? 'bg-white' : 'bg-white/30'"></span>
           </template>
         </div>
         <div class="flex items-center justify-between px-4 pb-2 text-white">
-          <span class="text-sm font-semibold" x-text="stories[idx].title"></span>
-          <button @click="viewer=false" class="text-2xl leading-none" aria-label="Закрыть">×</button>
+          <span class="text-sm font-semibold" x-text="stories[viewer.storyIdx]?.title"></span>
+          <button @click="closeViewer()" class="text-2xl leading-none" aria-label="Закрыть">×</button>
         </div>
-        <div class="relative flex-1">
-          <img :src="stories[idx].img" :alt="stories[idx].title" class="h-full w-full object-cover" />
-          <button @click="prev()" class="absolute inset-y-0 left-0 w-1/3" aria-label="Назад"></button>
-          <button @click="next()" class="absolute inset-y-0 right-0 w-2/3" aria-label="Далее"></button>
-          <p class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5 text-sm text-white" x-text="stories[idx].desc"></p>
+        <div class="relative flex-1 overflow-hidden bg-black" @dblclick="likeSlide()">
+          <img :src="currentSlide?.img" :alt="stories[viewer.storyIdx]?.title" class="h-full w-full object-contain" />
+          <button @click="prevViewer()" class="absolute inset-y-0 left-0 w-1/3" aria-label="Назад"></button>
+          <button @click="nextViewer()" class="absolute inset-y-0 right-0 w-2/3" aria-label="Далее"></button>
+          <p class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5 text-sm text-white" x-text="currentSlide?.desc"></p>
+          <span
+            x-show="heart"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-50"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-125"
+            class="pointer-events-none absolute inset-0 grid place-items-center text-white"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-24 w-24 drop-shadow-lg"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.3A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.4 12 21 12 21Z"/></svg>
+          </span>
         </div>
         <div class="flex gap-3 p-4">
           <a href="https://t.me/mas_rur22" target="_blank" rel="noopener" class="flex-1 rounded-2xl bg-white py-3 text-center text-sm font-semibold text-ink">Написать в Telegram</a>
@@ -406,79 +619,7 @@
         </div>
       </div>
     </div>
-
-    <script>
-      function site() {
-        return {
-          menu: false,
-          viewer: false,
-          idx: 0,
-          nav: [
-            { t: "Услуги", h: "#services" },
-            { t: "Наши работы", h: "#works" },
-            { t: "Цены", h: "#prices" },
-            { t: "Отзывы", h: "#reviews" },
-            { t: "О нас", h: "#about" },
-            { t: "Контакты", h: "#contacts" },
-          ],
-          stats: [
-            { v: "5+ лет", t: "опыта" },
-            { v: "1000+", t: "довольных клиентов" },
-            { v: "Выезд", t: "за 1–2 часа" },
-            { v: "Безопасно", t: "для детей и животных" },
-          ],
-          steps: [
-            { t: "Вы присылаете фото", d: "Мы оцениваем объём и сложность работы" },
-            { t: "Сообщаем стоимость", d: "Предварительная цена и свободные даты" },
-            { t: "Приезжаем", d: "Со всем оборудованием и профессиональной химией" },
-            { t: "Проводим химчистку", d: "Удаляем загрязнения и запахи" },
-            { t: "Вы принимаете работу", d: "И наслаждаетесь чистой мебелью" },
-          ],
-          prices: [
-            { t: "Диван 2-местный", p: "от 3 500 ₽" },
-            { t: "Диван 3-местный", p: "от 4 500 ₽" },
-            { t: "Угловой диван", p: "от 5 500 ₽" },
-            { t: "Кресло", p: "от 1 500 ₽" },
-            { t: "Стул", p: "от 600 ₽ / шт." },
-            { t: "Матрас (1 спальное место)", p: "от 1 500 ₽" },
-            { t: "Ковёр", p: "от 250 ₽ / м²" },
-          ],
-          stains: [
-            { e: "🍷", t: "Пятна от еды и напитков" },
-            { e: "🐾", t: "Следы животных и запахи" },
-            { e: "🧴", t: "Жир и засаленность" },
-            { e: "🖍️", t: "Краски и чернила" },
-            { e: "🧸", t: "Детские пятна" },
-            { e: "🧽", t: "Сложные и старые загрязнения" },
-          ],
-          why: [
-            { e: "🧰", t: "Профессиональное оборудование", d: "Мощные экстракторы и щётки для глубокой очистки" },
-            { e: "🧪", t: "Профессиональная химия", d: "Безопасные составы, которые не портят ткань" },
-            { e: "🏅", t: "Опыт и ответственность", d: "Более 5 лет опыта и тысячи выполненных заказов" },
-            { e: "🛡️", t: "Гарантия качества", d: "Если что-то не устроит — исправим бесплатно" },
-          ],
-          reviews: [
-            { n: "Анна, Москва", c: "Диван, ткань", t: "Отличная работа! Диван как новый, пятна от кофе и следы от ребёнка полностью ушли. Мастер вежливый, приехал вовремя." },
-            { n: "Алексей, ресторан Sapiens", c: "Мягкая мебель в зале", t: "Чистим с CODE всю мягкую мебель в ресторане. Всегда стабильно качественный результат и гибкий график." },
-          ],
-          stories: [
-            { img: "/img/beforeafter.jpg", title: "Диваны", desc: "Диван из ткани, ЖК Сердце Столицы. Убрали пятна от кофе и детские загрязнения." },
-            { img: "/img/work1.jpg", title: "Кресла", desc: "Кресло после глубокой экстракторной чистки — ткань свежая, без запаха." },
-            { img: "/img/hero.jpg", title: "Гостиные", desc: "Комплексная чистка мягкой зоны: диван, подушки и ковёр." },
-            { img: "/img/founder.jpg", title: "О нас", desc: "Масрур — основатель CODE, лично контролирует каждую чистку." },
-          ],
-          open(i) {
-            this.idx = i;
-            this.viewer = true;
-          },
-          next() {
-            this.idx < this.stories.length - 1 ? this.idx++ : (this.viewer = false);
-          },
-          prev() {
-            if (this.idx > 0) this.idx--;
-          },
-        };
-      }
-    </script>
+</div>
+    <script type="module" src="src/main.js"></script>
   </body>
 </html>
