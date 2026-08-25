@@ -1,0 +1,27 @@
+#!/bin/sh
+# systemd-sleep-code-bot
+# ────────────────────────────────────────────────────────────────────
+# Хук для systemd-logind: он сам вызывает такие скрипты из
+# /usr/lib/systemd/system-sleep/ (или /etc/systemd/system-sleep/)
+# ДО ухода в сон (аргумент "pre") и ПОСЛЕ пробуждения (аргумент "post").
+# Нас интересует только "post" — тогда перезапускаем/проверяем бота.
+#
+# Этот скрипт выполняется systemd от имени root, поэтому явно
+# переключаемся на обычного пользователя через runuser — иначе бот
+# и его файлы окажутся владения root, что потом мешает.
+#
+# Установка (нужны права root):
+#   sudo cp scripts/systemd-sleep-code-bot /usr/lib/systemd/system-sleep/
+#   sudo chmod +x /usr/lib/systemd/system-sleep/systemd-sleep-code-bot
+#
+# Перед установкой поправьте RUN_AS_USER и PROJECT_SCRIPT ниже под себя.
+# ────────────────────────────────────────────────────────────────────
+
+RUN_AS_USER="mgn"
+PROJECT_SCRIPT="/home/mgn/warm-cornerstone/scripts/wake-bot.sh"
+
+case "$1" in
+  post)
+    runuser -u "$RUN_AS_USER" -- "$PROJECT_SCRIPT" &
+    ;;
+esac

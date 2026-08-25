@@ -74,7 +74,7 @@ function app() {
             { t: "Наши работы", h: "#works" },
             { t: "Калькулятор", h: "#calculator" },
             { t: "Цены", h: "#prices", hideInApp: true },
-            { t: "Отзывы", h: "#reviews" },
+            { t: "Отзывы", h: "#reviews", hideInApp: true },
             { t: "Вопросы", h: "#faq", hideInApp: true },
             { t: "О нас", h: "#about", hideInApp: true },
             { t: "Контакты", h: "#contacts" },

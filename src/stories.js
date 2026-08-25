@@ -80,11 +80,4 @@ export const stories = [
       { img: "/img/stories/015.jpg", desc: "Диваны любого типа и тканей — полный вид после работы." },
     ],
   },
-  {
-    title: "цвавфыаыфвафыв",
-    createdAt: "2026-08-25T06:58:33.688Z",
-    slides: [
-      { img: "/img/stories/40268fd4-cfc0-4a13-94e6-5c3f8eec5716.jpg", desc: "цвавфыаыфвафыв" },
-    ],
-  },
 ];
