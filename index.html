@@ -90,19 +90,19 @@
 
     <!-- HEADER -->
     <header class="sticky top-[env(safe-area-inset-top)] z-40 border-b border-black/5 bg-cream/85 backdrop-blur">
-      <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 lg:h-20">
+      <div class="mx-auto flex h-16 max-w-6xl items-center px-5 lg:h-20" :class="isStandalone ? 'justify-center' : 'justify-between'">
         <a href="#top" class="font-display text-2xl font-extrabold tracking-[0.2em]">CODE</a>
-        <nav class="hidden items-center gap-8 text-sm font-medium text-stone lg:flex">
-          <a x-show="!isStandalone" class="transition hover:text-ink" href="#services">Услуги</a>
+        <nav x-show="!isStandalone" class="hidden items-center gap-8 text-sm font-medium text-stone lg:flex">
+          <a class="transition hover:text-ink" href="#services">Услуги</a>
           <a class="transition hover:text-ink" href="#works">Наши работы</a>
           <a class="transition hover:text-ink" href="#calculator">Калькулятор</a>
-          <a x-show="!isStandalone" class="transition hover:text-ink" href="#prices">Цены</a>
-          <a x-show="!isStandalone" class="transition hover:text-ink" href="#reviews">Отзывы</a>
-          <a x-show="!isStandalone" class="transition hover:text-ink" href="#faq">Вопросы</a>
-          <a x-show="!isStandalone" class="transition hover:text-ink" href="#about">О нас</a>
+          <a class="transition hover:text-ink" href="#prices">Цены</a>
+          <a class="transition hover:text-ink" href="#reviews">Отзывы</a>
+          <a class="transition hover:text-ink" href="#faq">Вопросы</a>
+          <a class="transition hover:text-ink" href="#about">О нас</a>
           <a class="transition hover:text-ink" href="#contacts">Контакты</a>
         </nav>
-        <div class="hidden lg:block">
+        <div x-show="!isStandalone" class="hidden lg:block">
           <a
             href="https://t.me/mas_rur22"
             target="_blank"
@@ -114,6 +114,7 @@
           </a>
         </div>
         <button
+          x-show="!isStandalone"
           @click="menu = !menu"
           class="grid h-10 w-10 shrink-0 place-items-center rounded-full transition active:scale-95 lg:hidden"
           :aria-expanded="menu"
@@ -126,7 +127,7 @@
           </span>
         </button>
       </div>
-      <div x-show="menu" x-transition.origin.top class="border-t border-black/5 bg-cream lg:hidden">
+      <div x-show="menu && !isStandalone" x-transition.origin.top class="border-t border-black/5 bg-cream lg:hidden">
         <nav class="mx-auto grid max-w-6xl gap-1 px-5 py-4 text-base font-medium">
           <template x-for="l in visibleNav" :key="l.h">
             <a :href="l.h" @click="menu=false" class="rounded-xl px-3 py-3 transition active:bg-sand" x-text="l.t"></a>
@@ -135,9 +136,9 @@
       </div>
     </header>
 
-    <main id="top">
+    <main id="top" class="flex flex-col">
       <!-- HERO -->
-      <section x-show="!isStandalone" class="relative overflow-hidden">
+      <section x-show="!isStandalone" class="relative order-[1] overflow-hidden">
         <div class="mx-auto max-w-6xl px-5 pb-8 pt-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-14 lg:pb-16 lg:pt-16">
           <div>
             <span class="inline-block rounded-full bg-sand px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-ink/70"
@@ -189,7 +190,7 @@
       </section>
 
       <!-- DISCOUNT RIBBON -->
-      <section x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-8">
+      <section x-show="!isStandalone" class="order-[2] mx-auto max-w-6xl px-5 pt-8">
         <a
           href="#calculator"
           class="flex items-center justify-between gap-3 rounded-2xl bg-clay/25 px-5 py-3.5 text-sm font-semibold text-ink transition hover:bg-clay/35"
@@ -215,7 +216,7 @@
       -->
 
       <!-- CALCULATOR -->
-      <section id="calculator" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="calculator" :class="isStandalone ? 'order-[2]' : 'order-[3]'" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Калькулятор стоимости</h2>
         <p class="mt-2 max-w-md text-[15px] leading-relaxed text-stone">
           Выберите предметы — увидите примерную стоимость. Точную цену подтвердим по фото в мессенджере.
@@ -311,7 +312,7 @@
       </section>
 
       <!-- STORIES (instagram style) -->
-      <section id="works" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="works" :class="isStandalone ? 'order-[1]' : 'order-[4]'" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Реальные результаты наших работ</h2>
         <p class="mt-2 text-[15px] text-stone">Нажмите на кружок — посмотрите фотографии работы, как в Instagram.</p>
 
@@ -352,7 +353,7 @@
       </section>
 
       <!-- WHAT WE DO -->
-      <section id="services" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="services" x-show="!isStandalone" class="order-[5] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Чем мы занимаемся</h2>
         <p class="mt-2 max-w-md text-[15px] leading-relaxed text-stone">
           Не только мебель — берём в работу квартиру, дом или офис целиком.
@@ -369,7 +370,7 @@
       </section>
 
       <!-- HOW -->
-      <section id="process" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="process" x-show="!isStandalone" class="order-[6] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Как мы работаем</h2>
         <ol class="mt-8 grid gap-5 lg:grid-cols-5">
           <template x-for="(s, i) in steps" :key="i">
@@ -383,7 +384,7 @@
       </section>
 
       <!-- PRICES -->
-      <section id="prices" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="prices" x-show="!isStandalone" class="order-[7] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Цены на химчистку мебели</h2>
         <div class="mt-7 grid gap-3 lg:grid-cols-2">
           <template x-for="p in prices" :key="p.t">
@@ -405,7 +406,7 @@
       </section>
 
       <!-- STAINS -->
-      <section x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section x-show="!isStandalone" class="order-[8] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Работаем с любыми загрязнениями</h2>
         <div class="mt-7 grid grid-cols-3 gap-4 lg:grid-cols-6">
           <template x-for="s in stains" :key="s.t">
@@ -418,7 +419,7 @@
       </section>
 
       <!-- WHY -->
-      <section x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section x-show="!isStandalone" class="order-[9] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <div class="rounded-[2rem] bg-ink p-7 text-cream lg:p-12">
           <h2 class="text-2xl font-extrabold lg:text-4xl">Почему выбирают CODE</h2>
           <div class="mt-8 grid gap-6 lg:grid-cols-2">
@@ -436,7 +437,7 @@
       </section>
 
       <!-- ABOUT -->
-      <section id="about" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="about" x-show="!isStandalone" class="order-[10] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <div class="overflow-hidden rounded-[2rem] border border-black/5 bg-white lg:grid lg:grid-cols-2">
           <img src="/img/founder.jpg" width="900" height="1200" alt="Масрур — основатель химчистки CODE" class="h-72 w-full object-cover object-top lg:h-full" loading="lazy" />
           <div class="p-7 lg:p-12">
@@ -453,7 +454,7 @@
       </section>
 
       <!-- FAQ -->
-      <section id="faq" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="faq" x-show="!isStandalone" class="order-[11] mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Вопросы, которые задают до заказа</h2>
         <div class="mt-7 grid gap-3">
           <template x-for="(f, i) in faqs" :key="f.q">
@@ -478,7 +479,7 @@
       </section>
 
       <!-- REVIEWS -->
-      <section id="reviews" x-show="!isStandalone" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="reviews" :class="isStandalone ? 'order-[3]' : 'order-[12]'" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <h2 class="text-2xl font-extrabold lg:text-4xl">Отзывы клиентов</h2>
         <div class="no-sb mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:overflow-visible">
           <template x-for="(r, ri) in reviews" :key="r.n">
@@ -487,6 +488,7 @@
                 <div class="min-w-0">
                   <p class="truncate font-semibold" x-text="r.n"></p>
                   <p class="text-xs text-stone" x-text="r.c"></p>
+                  <p class="text-[11px] text-stone/60" x-text="timeAgo(r.createdAt)"></p>
                 </div>
                 <span class="shrink-0 text-clay">★★★★★</span>
               </div>
@@ -504,7 +506,7 @@
       </section>
 
       <!-- CTA -->
-      <section id="contacts" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
+      <section id="contacts" :class="isStandalone ? 'order-[4]' : 'order-[13]'" class="mx-auto max-w-6xl px-5 pt-14 lg:pt-24">
         <div class="rounded-[2rem] bg-sand p-8 text-center lg:p-14">
           <h2 class="text-2xl font-extrabold lg:text-4xl">Готовы вернуть мебели чистоту и свежесть?</h2>
           <p class="mx-auto mt-3 max-w-md text-[15px] text-ink/70">
@@ -592,7 +594,10 @@
           </template>
         </div>
         <div class="flex items-center justify-between px-4 pb-2 text-white">
-          <span class="text-sm font-semibold" x-text="stories[viewer.storyIdx]?.title"></span>
+          <span class="flex items-baseline gap-2">
+            <span class="text-sm font-semibold" x-text="stories[viewer.storyIdx]?.title"></span>
+            <span class="text-xs text-white/50" x-text="timeAgo(stories[viewer.storyIdx]?.createdAt)"></span>
+          </span>
           <button @click="closeViewer()" class="text-2xl leading-none" aria-label="Закрыть">×</button>
         </div>
         <div class="relative flex-1 overflow-hidden bg-black" @dblclick="likeSlide()">
