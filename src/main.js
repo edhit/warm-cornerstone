@@ -16,6 +16,47 @@ function app() {
         viewer: { open: false, storyIdx: 0, slideIdx: 0 },
         reviewViewer: { open: false, reviewIdx: 0, photoIdx: 0 },
 
+        // ── Swipe gestures (story viewer / review viewer) ───────────
+        // dragging + dragY drive a live "follow the finger" translateY while swiping down,
+        // like Instagram/Stories apps — makes closing feel physical instead of an abrupt cut.
+        swipeState: { x: 0, y: 0 },
+        dragging: false,
+        dragY: 0,
+
+        touchStart(e) {
+            const t = e.touches[0];
+            this.swipeState = { x: t.clientX, y: t.clientY };
+            this.dragging = true;
+            this.dragY = 0;
+        },
+        touchMove(e) {
+            if (!this.dragging) return;
+            const t = e.touches[0];
+            const dx = t.clientX - this.swipeState.x;
+            const dy = t.clientY - this.swipeState.y;
+            // Only follow the finger for a downward drag (closing gesture) — horizontal
+            // swipes (next/prev) resolve on release instead, so the image doesn't jump around.
+            if (dy > 0 && dy > Math.abs(dx)) {
+                this.dragY = dy;
+            }
+        },
+        touchEnd(e, handlers = {}) {
+            this.dragging = false;
+            const t = e.changedTouches[0];
+            const dx = t.clientX - this.swipeState.x;
+            const dy = t.clientY - this.swipeState.y;
+            const absX = Math.abs(dx);
+            const absY = Math.abs(dy);
+
+            if (absY > absX && dy > 80 && handlers.down) {
+                handlers.down();
+            } else if (absX > 45 && absX > absY) {
+                if (dx < 0 && handlers.left) handlers.left();
+                else if (dx > 0 && handlers.right) handlers.right();
+            }
+            this.dragY = 0;
+        },
+
         // ── PWA install ──────────────────────────────────────────────
         canInstall: false,
         isStandalone: false,
